@@ -1,18 +1,18 @@
-function minPathSum(grid) {
-  const m = grid.length;
-  const n = grid[0].length;
-  const dp = Array.from(Array(m), () => Array(n).fill(0));
-  dp[0][0] = grid[0][0];
-  for (let i = 1; i < m; i++) {
-    dp[i][0] = dp[i - 1][0] + grid[i][0];
-  }
-  for (let j = 1; j < n; j++) {
-    dp[0][j] = dp[0][j - 1] + grid[0][j];
-  }
-  for (let i = 1; i < m; i++) {
-    for (let j = 1; j < n; j++) {
-      dp[i][j] = grid[i][j] + Math.min(dp[i - 1][j], dp[i][j - 1]);
+function isValidSudoku(board) {
+  const rows = new Array(9).fill().map(() => new Array(9).fill(0));
+  const cols = new Array(9).fill().map(() => new Array(9).fill(0));
+  const boxes = new Array(9).fill().map(() => new Array(9).fill(0));
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (board[i][j] !== ".") {
+        const num = Number(board[i][j]) - 1;
+        const k = Math.floor(i / 3) * 3 + Math.floor(j / 3);
+        if (rows[i][num] || cols[j][num] || boxes[k][num]) return false;
+        rows[i][num] = 1;
+        cols[j][num] = 1;
+        boxes[k][num] = 1;
+      }
     }
   }
-  return dp[m - 1][n - 1];
+  return true;
 }
